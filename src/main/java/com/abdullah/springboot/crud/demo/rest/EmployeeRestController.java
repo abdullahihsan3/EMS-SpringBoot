@@ -1,7 +1,7 @@
 package com.abdullah.springboot.crud.demo.rest;
 
 import java.util.List;
-
+import java.util.Optional;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,9 +28,9 @@ public class EmployeeRestController {
         return employeeService.findAll();
     }
     @GetMapping("/employees/{employeeId}")
-    public Employee findEmployeeById(@PathVariable int employeeId){
-        Employee theEmployee= employeeService.findEmployeeById(employeeId);
-        if(theEmployee == null){
+    public Optional<Employee> findEmployeeById(@PathVariable int employeeId){
+        Optional<Employee> theEmployee= employeeService.findById(employeeId);
+        if(theEmployee.get() == null){
             throw new EmployeeNotFoundException("Employee Id Not Found - "+ employeeId);
         }
         return theEmployee;
@@ -47,13 +47,9 @@ public class EmployeeRestController {
         return theEmployee;
     }
     @DeleteMapping("/employees/{employeeId}")
-    public Employee deleteEmployeeById(@PathVariable int employeeId){
-
-       Employee theEmployee =  employeeService.deleteEmployeeById(employeeId);
-       if(theEmployee ==null){
-        throw new EmployeeNotFoundException("Employee Id" + employeeId +" Not Found");
-       }
-       return theEmployee;
+    public void deleteEmployeeById(@PathVariable int employeeId){
+        employeeService.deleteById(employeeId);
+        return;
     }
 
 
